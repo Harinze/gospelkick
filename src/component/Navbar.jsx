@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from '../assets/gospel.jpeg';
 
 const Navbar = ({ onSearch }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
   const handleSearchChange = (e) => {
-    const searchTerm = e.target.value;
-    onSearch(searchTerm); 
+    setSearchTerm(e.target.value);
+  };
+
+  const handleInputKeyUp = (e) => {
+    if (searchTerm === '' && e.key === 'Backspace') {
+      onSearch('');
+    }
+  };
+
+  const handleSearchButtonClick = () => {
+    onSearch(searchTerm);
   };
 
   return (
@@ -19,9 +30,14 @@ const Navbar = ({ onSearch }) => {
           placeholder="Search..."
           className="flex-1 px-3 py-1 rounded border border-gray-400 mr-2 mb-2 sm:mb-0 text-black"
           style={{ width: '100%' }} 
+          value={searchTerm}
           onChange={handleSearchChange}
+          onKeyUp={handleInputKeyUp} 
         />
-        <button className="px-2 py-1 sm:px-3 sm:py-1 bg-secondary text-black rounded cursor-pointer hover:bg-custom">
+        <button 
+          className="px-2 py-1 sm:px-3 sm:py-1 bg-secondary text-black rounded cursor-pointer hover:bg-custom"
+          onClick={handleSearchButtonClick}
+        >
           Search
         </button>
       </div>
@@ -30,5 +46,3 @@ const Navbar = ({ onSearch }) => {
 };
 
 export default Navbar;
-
-
